@@ -1,19 +1,24 @@
 def move_dial_right(steps, position):
+    zero_clicks = 0
     for i in range(steps):
         position += 1
         if position > 99:
             position = 0
+        if position == 0 and i != steps - 1:
+            zero_clicks += 1
 
-    return position
+    return position, zero_clicks
 
 def move_dial_left(steps, position):    
-    
+    zero_clicks = 0
     for i in range(steps):
         position -= 1
+        if position == 0 and i != steps - 1:
+            zero_clicks += 1
         if position < 0:
             position = 99
 
-    return position
+    return position, zero_clicks
 
 if __name__ == "__main__":
 
@@ -28,11 +33,12 @@ if __name__ == "__main__":
     for direction in inputs:
         if direction.startswith('L'):
             steps = int(direction.replace('L', ''))
-            position = move_dial_left(steps, position)
+            position, zero_clicks = move_dial_left(steps, position)
+            answer += zero_clicks
         else:
             steps = int(direction.replace('R', ''))
-            position = move_dial_right(steps, position)
-
+            position, zero_clicks = move_dial_right(steps, position)
+            answer += zero_clicks
         if position == 0:
             answer += 1
         print(position)
